@@ -79,7 +79,7 @@ const userSchema = new mongoose.Schema( //or we can write new schema({}) if we i
       ],
     },
   },
-  { timestamps: true },
+  { timestamps: true }, // it will create two fields created and updated at timestamp in the document automatically
 );
 
 const User = mongoose.model("User", userSchema);

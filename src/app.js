@@ -122,7 +122,7 @@ app.patch("/user/:userId", async (req, res) => {
     //findByIdAndupdate(id,update,options). it holds 3 parameters id,update and options. id is the id of the user to be updated, update is the data to be updated and options is an object which can have various options like returnDocument,runValidators etc. returnDocument can have two values "before" and "after". if it is "before" then it will return the document before update and if it is "after" then it will return the document after update. runValidators is a boolean value which if true then it will run the validators defined in the schema for the fields being updated.
     const user = await User.findByIdAndUpdate(UserId, data, {
       returnDocument: "after",
-      runValidators: true,
+      runValidators: true, //[**important] this will run the validators defined in the schema for the fields being updated.
     });
     if (!user) {
       res.status(404).send("User not found");
