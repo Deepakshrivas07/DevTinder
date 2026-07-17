@@ -112,12 +112,12 @@ app.patch("/user/:userId", async (req, res) => {
   const UserId = req.params?.userId;
   const data = req.body;
   try {
-    const UPDATEALLOWED = ["password", "gender", "age", "skills", "photoUrl"];
+    const UPDATEALLOWED = ["password", "about", "gender", "age", "skills", "photoUrl"];
     const isUpdateAllowed = Object.keys(data).every((key) =>
-      UPDATEALLOWED.includes(key),
+      UPDATEALLOWED.includes(key)
     );
     if (!isUpdateAllowed) {
-      throw new Error("Update not allowed");
+      throw new Error("Update not allowed"); 
     }
     //findByIdAndupdate(id,update,options). it holds 3 parameters id,update and options. id is the id of the user to be updated, update is the data to be updated and options is an object which can have various options like returnDocument,runValidators etc. returnDocument can have two values "before" and "after". if it is "before" then it will return the document before update and if it is "after" then it will return the document after update. runValidators is a boolean value which if true then it will run the validators defined in the schema for the fields being updated.
     const user = await User.findByIdAndUpdate(UserId, data, {
@@ -134,7 +134,7 @@ app.patch("/user/:userId", async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(400).send("something went wrong: " + error.message);
+    res.status(400).send("ERROR: " + error.message);
   }
 });
 

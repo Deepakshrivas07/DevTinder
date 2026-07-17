@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+// validator is a third party library which is used to validate the data. it has various methods like isEmail, isStrongPassword, isURL etc. which can be used to validate the data.
 const validator = require("validator");
 const { default: isURL } = require("validator/lib/isURL");
 const userSchema = new mongoose.Schema( //or we can write new schema({}) if we import const {schema} = mongoose
@@ -7,13 +8,13 @@ const userSchema = new mongoose.Schema( //or we can write new schema({}) if we i
       type: String,
       required: true,
       minLength: 3,
-      maxlen:10,
+      maxLength: 10,
       trim: true,
     },
     lastName: {
       type: String,
       minLength: 3,
-      maxlength: 10,
+      maxLength: 10,
       trim: true,
     },
     emailId: {
@@ -22,11 +23,11 @@ const userSchema = new mongoose.Schema( //or we can write new schema({}) if we i
       required: true,
       unique: true,
       trim: true,
-      validate: {
-        validator(value) {
-          return validator.isEmail(value);
-        },
-      },
+      validate(value){
+        if(!validator.isEmail(value)){
+          throw new Error("Invalid Email address: " +value);
+        }
+      }
     },
     password: {
       type: String,
@@ -62,12 +63,17 @@ const userSchema = new mongoose.Schema( //or we can write new schema({}) if we i
       default:
         "https://www.vectorstock.com/royalty-free-vectors/default-profile-vectors",
     },
+    about:{
+      type:String,
+      minLength:10,
+      maxLength:100,
+    },
     skills: {
       type: [
         {
           type: String,
-          minlength: 2,
-          maxlength: 10,
+          minLength: 2,
+          maxLength: 10,
           trim: true,
         },
       ],
