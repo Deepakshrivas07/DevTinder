@@ -1,6 +1,7 @@
 const express = require("express");
 const { connectDB } = require("./config/database");
 const User = require("./models/user");
+//for encryption
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const { validateSignUpData, validateLogInData } = require("./utils/validation");
@@ -24,19 +25,20 @@ app.post("/signup", async (req, res) => {
   //     emailId:"deepakshrivas442@gmail.com",
   //     password:"deepak@123",
   // }
-  //new instance of User Model
-
+  
   const { firstName, lastName, emailId, password } = req.body;
   try {
-    //validation of data
+    //1)VALIDATION (api level validation of data)
     validateSignUpData(req);
-    //Encrypt the password
+    //2)Encrypt the password
     const passwordHash = await bcrypt.hash(password, 10);
     console.log(passwordHash);
     //real methord by giving req.body to User model instance as it contain json data and middleware converts into js obj.
     // const user = new User(req.body);
-
+    
     //but never EVER TRUST req.body so real methord is this instead of new user(reqq.body);
+
+    //3)new instance of User Model
     const user = new User({
       firstName,
       lastName,
