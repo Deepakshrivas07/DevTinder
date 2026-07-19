@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 // validator is a third party library which is used to validate the data. it has various methods like isEmail, isStrongPassword, isURL etc. which can be used to validate the data.
 const validator = require("validator");
+const jwt = require("jsonwebtoken")
+const bcrypt = require('bcrypt')
 const { default: isURL } = require("validator/lib/isURL");
 const userSchema = new mongoose.Schema( //or we can write new schema({}) if we import const {schema} = mongoose
   { 
@@ -87,6 +89,20 @@ const userSchema = new mongoose.Schema( //or we can write new schema({}) if we i
   },
   { timestamps: true }, // it will create two fields created and updated at timestamp in the document automatically
 );
+
+userSchema.methods.getJWT = async function(){
+  const  user = this
+  const token = await jwt.sign({ _id: user._id }, "Dev@Tinder$790",{expiresIn: "7d"});
+  return token;
+}
+
+userSchema.methods.validatePassword = async function(inputPassword){
+  //this refers to the current instances
+  const user = this
+  const passwordHashed = user.password;
+  const isPasswordValid = await bcrypt.compare(inputPassword, passwordHashed)
+  return isPasswordValid;
+}
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;
