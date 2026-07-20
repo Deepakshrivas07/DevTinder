@@ -91,11 +91,11 @@ const userSchema = new mongoose.Schema( //or we can write new schema({}) if we i
 );
 
 userSchema.methods.getJWT = async function(){
+  //this refers to the current instances
   const  user = this
   const token = await jwt.sign({ _id: user._id }, "Dev@Tinder$790",{expiresIn: "7d"});
   return token;
 }
-
 userSchema.methods.validatePassword = async function(inputPassword){
   //this refers to the current instances
   const user = this
