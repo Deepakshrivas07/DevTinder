@@ -16,6 +16,7 @@ const userAuth = async (req, res, next) => {
     }
     // we have set the user to req.user as we have find the use from the database and we can use this user in the next middleware or route handler. So that we don't have to find the user again in the next middleware or route handler.
     req.user = user;
+    req.id = _id
     next();
 
   } catch (error) {

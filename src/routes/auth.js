@@ -22,7 +22,7 @@ authRouter.post("/signup", async (req, res) => {
     validateSignUpData(req);
     //2)Encrypt the password
     const passwordHash = await bcrypt.hash(password, 10);
-    console.log(passwordHash);
+    // console.log(passwordHash);
     //real methord by giving req.body to User model instance as it contain json data and middleware converts into js obj.
     // const user = new User(req.body);
     

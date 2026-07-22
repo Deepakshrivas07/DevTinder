@@ -10,13 +10,13 @@ const userSchema = new mongoose.Schema( //or we can write new schema({}) if we i
       type: String,
       required: true,
       minLength: 3,
-      maxLength: 10,
+      maxLength: 20,
       trim: true,
     },
     lastName: {
       type: String,
       minLength: 3,
-      maxLength: 10,
+      maxLength: 20,
       trim: true,
     },
     emailId: {
