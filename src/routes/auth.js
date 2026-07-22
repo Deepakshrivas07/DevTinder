@@ -4,6 +4,8 @@ const authRouter = express.Router()
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const { validateSignUpData, validateLogInData } = require("../utils/validation");
+const { userAuth } = require("../middlewares/auth");
+
 authRouter.post("/signup", async (req, res) => {
   // this was for learning perpose(static methord)
   // const userObj = {
@@ -62,11 +64,16 @@ authRouter.post("/login", async (req, res) => {
       const token = await user.getJWT()
       //adding token to cookie  and send it to the user so that when user make a req for /profile etc server can authenticate
       res.cookie("token", token,{expires: new Date(Date.now() + 8 * 36000000)});
-      res.status(200).send("Login Successfully.");
+      res.status(200).send("Login Successfull.");
     }
   } catch (error) {
     res.status(400).send("ERROR: " + error.message);
   }
 });
+
+authRouter.post('/logout',(req,res)=>{
+  res.clearCookie("token")
+  res.status(200).send("Logout successfull.")
+})
 
 module.exports = authRouter;
