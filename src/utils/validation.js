@@ -24,6 +24,7 @@ const validateEditProfileData = (req) => {
     "firstName",
     "lastName",
     "age",
+    "photoUrl",
     "gender",
     "about",
     "skills",
@@ -74,6 +75,11 @@ const validateEditProfileData = (req) => {
   ) {
     throw new Error("About must be less than 500 characters.");
   }
+
+  // Validate PhotoUrl
+    if(data.photoUrl !== unndefined && validator.isURL(data.photoUrl)){
+      throw new Error("Invalid photoUrl")
+    }
 
   // Validate skills
   if (data.skills !== undefined) {
