@@ -20,15 +20,102 @@ const validateLogInData = (req) => {
 
 const validateEditProfileData = (req) => {
   const data = req.body;
-  const allowedEditFields = ["firstName", "lastName", "age", "gender", "about","skills"];
+  const allowedEditFields = [
+    "firstName",
+    "lastName",
+    "age",
+    "gender",
+    "about",
+    "skills",
+  ];
   const isAllowed = Object.keys(data).every((key) =>
-    allowedEditFields.includes(key)
+    allowedEditFields.includes(key),
   );
-  return isAllowed;
+  if (!isAllowed) {
+    throw new Error("Invalid update fields.");
+  }
+
+  // Validate firstName
+  if (
+    data.firstName !== undefined &&
+    (typeof data.firstName !== "string" || data.firstName.trim() === "")
+  ) {
+    throw new Error("Please enter a valid first name.");
+  }
+
+  // Validate lastName
+  if (
+    data.lastName !== undefined &&
+    (typeof data.lastName !== "string" || data.lastName.trim() === "")
+  ) {
+    throw new Error("Please enter a valid last name.");
+  }
+
+  // Validate age
+  if (
+    data.age !== undefined &&
+    (!Number.isInteger(data.age) || data.age < 1 || data.age > 90)
+  ) {
+    throw new Error("Please enter a valid age.");
+  }
+
+  // Validate gender
+  if (
+    data.gender !== undefined &&
+    !["male", "female", "other"].includes(data.gender.toLowerCase())
+  ) {
+    throw new Error("Gender must be male, female, or other.");
+  }
+
+  // Validate about
+  if (
+    data.about !== undefined &&
+    (typeof data.about !== "string" || data.about.length > 200)
+  ) {
+    throw new Error("About must be less than 500 characters.");
+  }
+
+  // Validate skills
+  if (data.skills !== undefined) {
+    if (!Array.isArray(data.skills)) {
+      throw new Error("Skills must be an array.");
+    }
+
+    if (data.skills.length > 10) {
+      throw new Error("You can add a maximum of 20 skills.");
+    }
+
+    const areAllStrings = data.skills.every(
+      (skill) => typeof skill === "string" && skill.trim() !== "",
+    );
+
+    if (!areAllStrings) {
+      throw new Error("Each skill must be a valid string.");
+    }
+  }
+
+  return true;
 };
+
+const validateForgotPasswordData = function(req){
+  const data = req.body
+  const allowedField = ["password"]
+  const isallowed = Object.keys(data).every((key)=>allowedField.includes(key))
+  if(!isallowed){
+    throw new Error("Only password is allowed to update.")
+  }
+  if(!data.password){
+    throw new Error("Password is required.");
+  }
+  if(!validator.isStrongPassword(data.password)){
+    throw new Error("Pls Enter Strong Password!!");
+  }
+  return true;
+}
 
 module.exports = {
   validateSignUpData,
   validateLogInData,
   validateEditProfileData,
+  validateForgotPasswordData,
 };
