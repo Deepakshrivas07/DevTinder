@@ -77,7 +77,7 @@ const validateEditProfileData = (req) => {
   }
 
   // Validate PhotoUrl
-    if(data.photoUrl !== unndefined && validator.isURL(data.photoUrl)){
+    if(data.photoUrl !== undefined && validator.isURL(data.photoUrl)){
       throw new Error("Invalid photoUrl")
     }
 

@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema( //or we can write new schema({}) if we i
       type: String,
       lowercase: true,
       required: true,
-      unique: true,
+      unique: true, //if we put fields as UNIQUE express automatically creates index to retreive query faster.
       trim: true,
       validate(value){
         if(!validator.isEmail(value)){
@@ -51,7 +51,16 @@ const userSchema = new mongoose.Schema( //or we can write new schema({}) if we i
     gender: {
       type: String,
       lowercase: true,
-      enum: ["male", "female", "other"],
+      enum:{
+        values:["male", "female", "other"],
+        message:`{VALUE} is not a valid gender type`
+      },
+      //or can add custom validator
+      // validate(value){
+      //   if(!["male","female","other"].includes(value)){
+      //     throw new Error("Gender is not valid")
+      //   }
+      // }
     },
     photoUrl: {
       type: String,
@@ -89,6 +98,7 @@ const userSchema = new mongoose.Schema( //or we can write new schema({}) if we i
   },
   { timestamps: true }, // it will create two fields created and updated at timestamp in the document automatically
 );
+
 
 userSchema.methods.getJWT = async function(){
   //this refers to the current instances
